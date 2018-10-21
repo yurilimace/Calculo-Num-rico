@@ -460,11 +460,11 @@ int main(){
         //Limpar o buffer no Linux
         fpurge(stdin);
         scanf("%c",&entradaUsuario);
-        if(entradaUsuario == 'C'){
+        if(entradaUsuario == 'C' || entradaUsuario == 'c'){
             converteNumero();
             printf("\n\n");
         }
-        else if(entradaUsuario == 'S'){
+        else if(entradaUsuario == 'S' || entradaUsuario == 's'){
             //Limpar o buffer no Windows
             fflush(stdin);
             //Limpar o buffer no Linux
@@ -484,12 +484,12 @@ int main(){
             }
         }
 
-        else if(entradaUsuario == 'E'){
+        else if(entradaUsuario == 'E' || entradaUsuario == 'e'){
             equacaoAlgebrica();
             printf("\n\n");
         }
 
-        else if(entradaUsuario == 'F'){
+        else if(entradaUsuario == 'F'|| entradaUsuario == 'f'){
             printf("Programa Finalizado");
             break;
         }
