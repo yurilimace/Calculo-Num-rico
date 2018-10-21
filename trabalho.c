@@ -4,7 +4,7 @@
 #include <math.h>
 #define EPSILON 0.000001
 
-void Converte_Octal(int Inteiro,double Fracionario,int *resultado){
+void converteOctal(int Inteiro,double Fracionario,int *resultado){
     int i,j,k,m;
     double aux;
 
@@ -26,7 +26,7 @@ void Converte_Octal(int Inteiro,double Fracionario,int *resultado){
 }
 
 // Conversão para binário feito
-void Converte_binario(int Inteiro,double Fracionario,int *resultado){
+void converteBinario(int Inteiro,double Fracionario,int *resultado){
     int i,j,k,m;
     double aux;
 
@@ -47,7 +47,7 @@ void Converte_binario(int Inteiro,double Fracionario,int *resultado){
     }
 }
 
-void Converte_Hexa(int Inteiro,double Fracionario,int *resultado){
+void converteHexa(int Inteiro,double Fracionario,int *resultado){
     int i,j,k,m;
     double aux;
 
@@ -109,18 +109,18 @@ void Converte_Hexa(int Inteiro,double Fracionario,int *resultado){
     }
 }
 
-void ConverteNumero(){
+void converteNumero(){
     int i,j;
     double teste;
-    int Parte_inteira;
-    double Parte_fracionaria;
+    int parteInteira;
+    double parteFracionaria;
     int  *resultado; //Armazena o resultado das sucessivas divisões
 
     printf("Digite o numero decimal ");
     scanf("%lf",&teste);
 
-    Parte_inteira = floor(teste);
-    Parte_fracionaria = teste - Parte_inteira;
+    parteInteira = floor(teste);
+    parteFracionaria = teste - parteInteira;
 
     resultado = malloc(sizeof(resultado)*30);
 
@@ -129,11 +129,11 @@ void ConverteNumero(){
     }
 
 
-    Converte_binario(Parte_inteira,Parte_fracionaria,resultado);
+    converteBinario(parteInteira,parteFracionaria,resultado);
     printf("\n");
-    Converte_Octal(Parte_inteira,Parte_fracionaria,resultado);
+    converteOctal(parteInteira,parteFracionaria,resultado);
     printf("\n");
-    Converte_Hexa(Parte_inteira,Parte_fracionaria,resultado);
+    converteHexa(parteInteira,parteFracionaria,resultado);
     printf("\n");
 }
 
@@ -254,7 +254,7 @@ int sretro(double **m, int n, double x[]){
 
 
 
-void SistemaLinear(FILE *file){
+void sistemaLinear(FILE *file){
     double **matriz,*x;
     int n,i,j,tipo;
     int *colunas;
@@ -301,11 +301,15 @@ void SistemaLinear(FILE *file){
     }
 }
 
-float calcula_Ls(int grau,int coeficientes[]){
+float calculaL(int grau,int coeficientes[]){
 
+    //n: grau do polinomio
     int n=grau;
+
+    // k: maior índice dentre os índices dos coeficientes negativos
+    // b: módulo  do menor coeficiente negativo
+    // an: coeficiente do x?n
     int an,b,k,i;
-    float ban,nk;
 
     b = 0;
     k = 0;
@@ -323,12 +327,9 @@ float calcula_Ls(int grau,int coeficientes[]){
     }
 
     b = b*(-1);
-    ban = (float)b/(float)an;
-    nk = n-k;
 
-    float L = 1 + pow(ban,1/nk);
-
-    return L;
+    // Formula do calculo do L
+    return 1 + pow(((float)b/(float)an),1/(n-k));
 }
 
 void lagrange(int grau,int coeficientes[]){
@@ -348,7 +349,7 @@ void lagrange(int grau,int coeficientes[]){
         }
     }
 
-    Ls[0] = calcula_Ls(grau,coeficientes2);
+    Ls[0] = calculaL(grau,coeficientes2);
 
     // calculo do L1
     j=0;
@@ -363,7 +364,7 @@ void lagrange(int grau,int coeficientes[]){
         }
     }
 
-    Ls[1] = calcula_Ls(grau,coeficientes2);
+    Ls[1] = calculaL(grau,coeficientes2);
 
     // calculo do L2
     for(i=grau;i>=0;i--){
@@ -379,7 +380,7 @@ void lagrange(int grau,int coeficientes[]){
         }
     }
 
-    Ls[2] = calcula_Ls(grau,coeficientes2);
+    Ls[2] = calculaL(grau,coeficientes2);
 
     // calculo do L3
     j=0;
@@ -397,7 +398,7 @@ void lagrange(int grau,int coeficientes[]){
         }
     }
 
-    Ls[3] = calcula_Ls(grau,coeficientes2);
+    Ls[3] = calculaL(grau,coeficientes2);
 
     //printf("\nLs: %f ; %f ; %f ; %f ",Ls[0],Ls[1],Ls[2],Ls[3]);
 
@@ -408,7 +409,7 @@ void lagrange(int grau,int coeficientes[]){
 
 }
 
-void equacao(){
+void equacaoAlgebrica(){
     int grau=1;
     int i;
 
@@ -460,7 +461,7 @@ int main(){
         fpurge(stdin);
         scanf("%c",&entradaUsuario);
         if(entradaUsuario == 'C'){
-            ConverteNumero();
+            converteNumero();
             printf("\n\n");
         }
         else if(entradaUsuario == 'S'){
@@ -479,12 +480,12 @@ int main(){
 
             else{
                 printf("Arquivo Encontrado \n");
-                SistemaLinear(file);
+                sistemaLinear(file);
             }
         }
 
         else if(entradaUsuario == 'E'){
-            equacao();
+            equacaoAlgebrica();
             printf("\n\n");
         }
 
@@ -500,8 +501,3 @@ int main(){
 
     return 0;
 }
-
-
-
-
-
