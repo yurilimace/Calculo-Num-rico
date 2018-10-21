@@ -4,6 +4,20 @@
 #include <math.h>
 #define EPSILON 0.000001
 
+void limpaBuffer(){
+    #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+        fpurge(stdin);
+    #endif
+
+    #if defined(_WIN32) || defined(_WIN64)
+        fflush(stdin);
+    #endif
+
+
+}
+
+
+
 void converteOctal(int Inteiro,double Fracionario,int *resultado){
     int i,j,k,m;
     double aux;
@@ -338,7 +352,7 @@ void lagrange(int grau,int coeficientes[]){
     int coeficientes2[grau+1];
     float Ls[4];
 
-    // calculo do L 
+    // calculo do L
     for(i=grau;i>=0;i--){
         coeficientes2[i] = coeficientes[i];
     }
@@ -456,9 +470,9 @@ int main(){
         printf("F - Finalizar \n\n");
         printf("Escolha uma opcao\n\n");
         //Limpar o buffer no Windows
-        fflush(stdin);
+        limpaBuffer();
         //Limpar o buffer no Linux
-        fpurge(stdin);
+        //fpurge(stdin);
         scanf("%c",&entradaUsuario);
         if(entradaUsuario == 'C' || entradaUsuario == 'c'){
             converteNumero();
@@ -466,9 +480,9 @@ int main(){
         }
         else if(entradaUsuario == 'S' || entradaUsuario == 's'){
             //Limpar o buffer no Windows
-            fflush(stdin);
+            limpaBuffer();
             //Limpar o buffer no Linux
-            fpurge(stdin);
+            //fpurge(stdin);
             printf("digite o nome do arquivo \n");
             gets(fileName);
             strcat(fileName,".txt\0");
