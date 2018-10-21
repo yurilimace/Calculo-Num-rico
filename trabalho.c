@@ -4,7 +4,36 @@
 #include <math.h>
 #define EPSILON 0.000001
 
+
+/* Exercício Programa da Disciplina Calculo Numérico Tarde
+   Curso Engenharia da Computação   */
+
+
+
+/* Autores
+    Angelo
+    Italo Bruno
+    João Gabriel
+    José Yuri
+    Luan Pontes
+*/
+
+
+/*  O programa desenvolvido abaixo visa implementar na linguagem C alguns conteudos abordados em sala como a conversão
+    de base numerica,resolução de sistemas lineares utilizando o metodo de Jordan,Teorema de Lagrange para exibir o in-
+    tervalo onde se encontram as raizes reais negativas e positivas da equação,Assim como o Teorema de Bolzano para a ve-
+    rificações de raizes impares e o metodo da bisseção para calcular uma aproximação para a raiz contida nesse intervalo  */
+
+/* o Programa funciona da seguinte maneira ao selecionar C o usuário digita um numero inteiro para ser realizada a conversão
+ para a base binária,octal e hexadecimal, ao selecionar S o usuário deve digitar o nome do arquivo que contém a matriz aumentada
+ para a resolução do sistema linear que será resolvido utilizando o metodo de jordan para triagularizar a matriz e a substituição
+ retroativa para a resolução do sistema, ao selecionar E o usuário digita o grau da equação e também os coeficentes*/
+
+
+
 void limpaBuffer(){
+    /*Função criada para poder executar o comando de limpeza do buffer do teclado nos seguintes sistemas operacionais
+    Linux, Windows e IOS*/
     #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
         fpurge(stdin);
     #endif
@@ -17,9 +46,12 @@ void limpaBuffer(){
 }
 
 
+/* Funções necessarias para a conversão de base numérica*/
+
 
 void converteOctal(int Inteiro,double Fracionario,int *resultado){
-    int i,j,k,m;
+    /*Converte o numero digitado pelo usuario para a base octal*/
+    int i,j,k,m; //variaveis
     double aux;
 
     for(i=0;Inteiro>=1;i++){
@@ -31,7 +63,7 @@ void converteOctal(int Inteiro,double Fracionario,int *resultado){
         printf("%d",resultado[j]);
     }
     printf(",");
-
+    //laço para calcular a parte fracionária da conversão parando quando for 0 ou quando a parte fracionaria atingir a precisão de 20 casas decimais
     for(k =0;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 8;
         Fracionario = modf(Fracionario,&aux);
@@ -39,9 +71,9 @@ void converteOctal(int Inteiro,double Fracionario,int *resultado){
     }
 }
 
-// Conversão para binário feito
+/*Converte o numero digitado pelo usuario para a base binaria*/
 void converteBinario(int Inteiro,double Fracionario,int *resultado){
-    int i,j,k,m;
+    int i,j,k,m; //variaveis
     double aux;
 
     for(i=0;Inteiro>=1;i++){
@@ -53,7 +85,7 @@ void converteBinario(int Inteiro,double Fracionario,int *resultado){
         printf("%d",resultado[j]);
     }
     printf(",");
-
+    //laço para calcular a parte fracionária da conversão parando quando for 0 ou quando a parte fracionaria atingir a precisão de 20 casas decimais
     for(k =0;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 2;
         Fracionario = modf(Fracionario,&aux);
@@ -62,6 +94,7 @@ void converteBinario(int Inteiro,double Fracionario,int *resultado){
 }
 
 void converteHexa(int Inteiro,double Fracionario,int *resultado){
+    /*Converte o numero digitado pelo usuario para a base hexadecimal*/
     int i,j,k,m;
     double aux;
 
@@ -69,7 +102,7 @@ void converteHexa(int Inteiro,double Fracionario,int *resultado){
         resultado[i] = Inteiro % 16;
         Inteiro = Inteiro / 16;
     }
-
+    //substitui para o caracter correspondente na base hexadecimal quando o numero foi maior que 9
     for(j = i-1;j>=0;j--){
         if(resultado[j] == 10){
             printf("A");
@@ -95,7 +128,7 @@ void converteHexa(int Inteiro,double Fracionario,int *resultado){
 
     }
     printf(",");
-
+    //laço para calcular a parte fracionária da conversão parando quando for 0 ou quando a parte fracionaria atingir a precisão de 20 casas decimais
     for(k =i;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 16;
         Fracionario = modf(Fracionario,&aux);
@@ -124,17 +157,18 @@ void converteHexa(int Inteiro,double Fracionario,int *resultado){
 }
 
 void converteNumero(){
+    /*Função que agrupa e chama os outros metodos para conversão de base numerica*/
     int i,j;
-    double teste;
+    double numero;
     int parteInteira;
     double parteFracionaria;
     int  *resultado; //Armazena o resultado das sucessivas divisões
 
     printf("Digite o numero decimal ");
-    scanf("%lf",&teste);
+    scanf("%lf",&numero);
 
-    parteInteira = floor(teste);
-    parteFracionaria = teste - parteInteira;
+    parteInteira = floor(numero); //armazena a parte inteira do numero
+    parteFracionaria = numero - parteInteira;
 
     resultado = malloc(sizeof(resultado)*30);
 
@@ -150,6 +184,8 @@ void converteNumero(){
     converteHexa(parteInteira,parteFracionaria,resultado);
     printf("\n");
 }
+
+/* Fim das funções necessárias para a realização da conversão de base*/
 
 
 double **alocaMatriz(int numLinhas, int numColunas){
@@ -211,10 +247,11 @@ void jordan(double **m,int n, int *colunas){
             }
             if(j<n){
                for(p=0;p<n;p++){
-                  aux = m[p][i];
+                  aux = m[p][i];  /* faz a troca dos elementos da coluna*/
                   m[p][i] = m[p][j];
                   m[p][j] = aux;
                }
+               /*troca o coeficiente das colunas em que foi necessário a troca */
                aux = colunas[i];
                colunas[i] = colunas[j];
                colunas[j] = aux;
