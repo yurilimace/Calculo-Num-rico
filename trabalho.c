@@ -301,9 +301,145 @@ void SistemaLinear(FILE *file){
     }
 }
 
+float calcula_Ls(int grau,int coeficientes[]){
+
+    int n=grau;
+    int an,b,k,i;
+    float ban,nk;
+
+    b = 0;
+    k = 0;
+    an = coeficientes[n];
+
+    for(i=grau;i>=0;i--){
+
+        if(coeficientes[i]<b){
+            b=coeficientes[i];
+        }
+
+        if(coeficientes[i]<0 && i>k){
+            k=i;
+        }
+    }
+
+    b = b*(-1);
+    ban = (float)b/(float)an;
+    nk = n-k;
+
+    float L = 1 + pow(ban,1/nk);
+
+    return L;
+}
+
+void lagrange(int grau,int coeficientes[]){
+
+    int i,j;
+    int coeficientes2[grau+1];
+    float Ls[4];
+
+    // calculo do L 
+    for(i=grau;i>=0;i--){
+        coeficientes2[i] = coeficientes[i];
+    }
+
+    if(coeficientes2[grau]<0){
+        for(i=grau;i>=0;i--){
+            coeficientes2[i] = coeficientes2[i] * (-1);
+        }
+    }
+
+    Ls[0] = calcula_Ls(grau,coeficientes2);
+
+    // calculo do L1
+    j=0;
+    for(i=grau;i>=0;i--){
+        coeficientes2[i] = coeficientes[j];
+        j = j+1;
+    }
+
+    if(coeficientes2[grau]<0){
+        for(i=grau;i>=0;i--){
+            coeficientes2[i] = coeficientes2[i] * (-1);
+        }
+    }
+
+    Ls[1] = calcula_Ls(grau,coeficientes2);
+
+    // calculo do L2
+    for(i=grau;i>=0;i--){
+        coeficientes2[i] = coeficientes[i];
+        if(i%2!=0){
+            coeficientes2[i] = coeficientes2[i] * (-1);
+        }
+    }
+
+    if(coeficientes2[grau]<0){
+        for(i=grau;i>=0;i--){
+            coeficientes2[i] = coeficientes2[i] * (-1);
+        }
+    }
+
+    Ls[2] = calcula_Ls(grau,coeficientes2);
+
+    // calculo do L3
+    j=0;
+    for(i=grau;i>=0;i--){
+        coeficientes2[i] = coeficientes[j];
+        if(i%2!=0){
+            coeficientes2[i] = coeficientes2[i] * (-1);
+        }
+        j = j+1;
+    }
+
+    if(coeficientes2[grau]<0){
+        for(i=grau;i>=0;i--){
+            coeficientes2[i] = coeficientes2[i] * (-1);
+        }
+    }
+
+    Ls[3] = calcula_Ls(grau,coeficientes2);
+
+    //printf("\nLs: %f ; %f ; %f ; %f ",Ls[0],Ls[1],Ls[2],Ls[3]);
+
+    printf("\n Intervalo onde se encontram as raizes reais positivas:");
+    printf("\n %.6f <= X+ <= %.6f ",1/Ls[1],Ls[0]);
+    printf("\n\n Intervalo onde se encontram as raizes reais negativas:");
+    printf("\n %.6f <= X- <= %.6f ",Ls[2]*(-1),(-1/Ls[3]));
+
+}
+
+void equacao(){
+    int grau=1;
+    int i;
+
+    printf("Digite o grau da equacao: ");
+    scanf("%i",&grau);
+
+    int coeficientes[grau+1];
+
+    for(i=grau;i>=0;i--){
+        printf("\nDigite o coeficiente a%i: ",i);
+        scanf("%i",&coeficientes[i]);
+
+        if((i==grau) && (coeficientes[i]<=0)){
+
+            printf("\nCoeficiente an digitado eh menor que zero. Tente novamente com outro valor.\n");
+            i = grau + 1;
+        }
+
+        if((i==0) && (coeficientes[i]==0)){
+
+            printf("\nCoeficiente a0 digitado eh igual a zero. Tente novamente com outro valor.\n");
+            i = i + 1;
+        }
+    }
+    lagrange(grau,coeficientes);
+}
+
+
 
 int main(){
-    char userInput;
+    char entradaUsuario;
     FILE *file;
     char *fileName;
     fileName = malloc(sizeof(char)*35);
@@ -312,23 +448,25 @@ int main(){
         printf("Falta de memoria");
     }
 
-
-
-    while(userInput != 'F'){
+    while(entradaUsuario != 'F'){
         printf("C - Conversao \n");
         printf("S - Sistema Linear \n");
         printf("E - Equaçao Algébrica \n");
         printf("F - Finalizar \n\n");
         printf("Escolha uma opcao\n\n");
+        //Limpar o buffer no Windows
         fflush(stdin);
+        //Limpar o buffer no Linux
         fpurge(stdin);
-        scanf("%c",&userInput);
-        if(userInput == 'C'){
+        scanf("%c",&entradaUsuario);
+        if(entradaUsuario == 'C'){
             ConverteNumero();
             printf("\n\n");
         }
-        else if(userInput == 'S'){
+        else if(entradaUsuario == 'S'){
+            //Limpar o buffer no Windows
             fflush(stdin);
+            //Limpar o buffer no Linux
             fpurge(stdin);
             printf("digite o nome do arquivo \n");
             gets(fileName);
@@ -343,14 +481,14 @@ int main(){
                 printf("Arquivo Encontrado \n");
                 SistemaLinear(file);
             }
-
         }
 
-        else if(userInput == 'E'){
-            printf("Equacao Algebrica \n\n\n");
+        else if(entradaUsuario == 'E'){
+            equacao();
+            printf("\n\n");
         }
 
-        else if(userInput == 'F'){
+        else if(entradaUsuario == 'F'){
             printf("Programa Finalizado");
             break;
         }
