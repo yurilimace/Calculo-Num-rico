@@ -329,7 +329,7 @@ float calculaL(int grau,int coeficientes[]){
     b = b*(-1);
 
     // Formula do calculo do L
-    return 1 + pow(((float)b/(float)an),1/(n-k));
+    return 1 + pow(((float)b/(float)an), 1/(float)(n-k));
 }
 
 void lagrange(int grau,int coeficientes[]){
