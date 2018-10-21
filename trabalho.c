@@ -348,6 +348,7 @@ int main(){
         printf("F - Finalizar \n\n");
         printf("Escolha uma opcao\n\n");
         fflush(stdin);
+        fpurge(stdin);
         scanf("%c",&op);
         if(op == 'C'){
             ConverteNumero();
@@ -355,6 +356,7 @@ int main(){
         }
         else if(op == 'S'){
             fflush(stdin);
+            fpurge(stdin);
             printf("digite o nome do arquivo \n");
             gets(fileName);
             strcat(fileName,".txt\0");
