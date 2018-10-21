@@ -5,7 +5,7 @@
 #define EPSILON 0.000001
 
 void Converte_Octal(int Inteiro,double Fracionario,int *resultado){
-    int i,j,k,m,vai;
+    int i,j,k,m;
     double aux;
 
     for(i=0;Inteiro>=1;i++){
@@ -21,19 +21,13 @@ void Converte_Octal(int Inteiro,double Fracionario,int *resultado){
     for(k =0;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 8;
         Fracionario = modf(Fracionario,&aux);
-        vai = (int) aux;
-        printf("%d",vai);
+        printf("%d",(int) aux);
     }
-
-
-
 }
-
-
 
 // Conversão para binário feito
 void Converte_binario(int Inteiro,double Fracionario,int *resultado){
-    int i,j,k,m,vai;
+    int i,j,k,m;
     double aux;
 
     for(i=0;Inteiro>=1;i++){
@@ -49,17 +43,12 @@ void Converte_binario(int Inteiro,double Fracionario,int *resultado){
     for(k =0;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 2;
         Fracionario = modf(Fracionario,&aux);
-        vai = (int) aux;
-        printf("%d",vai);
+        printf("%d",(int) aux);
     }
-
-
 }
 
-
-
 void Converte_Hexa(int Inteiro,double Fracionario,int *resultado){
-    int i,j,k,m,vai;
+    int i,j,k,m;
     double aux;
 
     for(i=0;Inteiro>=1;i++){
@@ -96,35 +85,29 @@ void Converte_Hexa(int Inteiro,double Fracionario,int *resultado){
     for(k =i;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 16;
         Fracionario = modf(Fracionario,&aux);
-        vai = (int) aux;
-        if(vai == 10){
+        if((int) aux == 10){
             printf("A");
         }
-        else if(vai ==11){
+        else if((int) aux ==11){
                 printf("B");
         }
-        else if(vai == 12){
+        else if((int) aux == 12){
                 printf("C");
         }
-        else if(vai ==13){
+        else if((int) aux ==13){
                 printf("D");
         }
-        else if(vai ==14){
+        else if((int) aux ==14){
                 printf("E");
         }
-        else if(vai == 15){
+        else if((int) aux == 15){
                 printf("F");
         }
         else{
-            printf("%d",vai);
+            printf("%d",(int) aux);
         }
     }
-
-
-
 }
-
-
 
 void ConverteNumero(){
     int i,j;
@@ -152,9 +135,6 @@ void ConverteNumero(){
     printf("\n");
     Converte_Hexa(Parte_inteira,Parte_fracionaria,resultado);
     printf("\n");
-
-
-
 }
 
 
@@ -318,19 +298,12 @@ void SistemaLinear(FILE *file){
         for(i = 0; i < n; i++){
             printf("x[%d] = %10.3lf\n",colunas[i], x[i]);
         }
-
     }
-
-
-
 }
 
 
-
-
-
 int main(){
-    char op;
+    char userInput;
     FILE *file;
     char *fileName;
     fileName = malloc(sizeof(char)*35);
@@ -341,20 +314,22 @@ int main(){
 
 
 
-    while(op != 'F'){
+    while(userInput != 'F'){
         printf("C - Conversao \n");
         printf("S - Sistema Linear \n");
         printf("E - Equaçao Algébrica \n");
         printf("F - Finalizar \n\n");
         printf("Escolha uma opcao\n\n");
         fflush(stdin);
-        scanf("%c",&op);
-        if(op == 'C'){
+        fpurge(stdin);
+        scanf("%c",&userInput);
+        if(userInput == 'C'){
             ConverteNumero();
             printf("\n\n");
         }
-        else if(op == 'S'){
+        else if(userInput == 'S'){
             fflush(stdin);
+            fpurge(stdin);
             printf("digite o nome do arquivo \n");
             gets(fileName);
             strcat(fileName,".txt\0");
@@ -371,11 +346,11 @@ int main(){
 
         }
 
-        else if(op == 'E'){
+        else if(userInput == 'E'){
             printf("Equacao Algebrica \n\n\n");
         }
 
-        else if(op == 'F'){
+        else if(userInput == 'F'){
             printf("Programa Finalizado");
             break;
         }
