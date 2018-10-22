@@ -162,7 +162,7 @@ void converteNumero(){
     double numero;
     int parteInteira;
     double parteFracionaria;
-    int  *resultado; //Armazena o resultado das sucessivas divisões
+    int  *resultado; //Armazena o resultado das sucessivas divis˜es
 
     printf("Digite o numero decimal ");
     scanf("%lf",&numero);
@@ -173,7 +173,7 @@ void converteNumero(){
     resultado = malloc(sizeof(resultado)*30);
 
     if(resultado == NULL){
-        printf("Não alocado Falta de memoria");
+        printf("N˜o alocado Falta de memoria");
     }
 
 
@@ -189,8 +189,8 @@ void converteNumero(){
 
 
 double **alocaMatriz(int numLinhas, int numColunas){
-    /*Se tiver memória disponível, aloca uma matriz de double com L linhas e c Colunas
-      e devolve um ponteiro para essa matriz; Caso contrário, devolve um ponteiro nulo.*/
+    /*Se tiver mem˜ria dispon˜vel, aloca uma matriz de double com L linhas e c Colunas
+      e devolve um ponteiro para essa matriz; Caso contr˜rio, devolve um ponteiro nulo.*/
     double **matriz;
     int i, j;
     matriz = malloc(sizeof(double *)*numLinhas);
@@ -277,9 +277,9 @@ void jordan(double **m,int n, int *colunas){
 
 
 int sretro(double **m, int n, double x[]){
-    /*Recebe m, a matriz aumentada de um SL TS com n variáveis.
-    Se o SL for determinado, armazena em x a solução do SL e dovolve 0;
-    Se for indeterminado, armazena uma solução do SL e devolve 1;*/
+    /*Recebe m, a matriz aumentada de um SL TS com n vari˜veis.
+    Se o SL for determinado, armazena em x a solu˜˜o do SL e dovolve 0;
+    Se for indeterminado, armazena uma solu˜˜o do SL e devolve 1;*/
     int i, j, tipo = 0;
     double soma;
     for(i = n - 1; i >= 0; i--){
@@ -289,11 +289,11 @@ int sretro(double **m, int n, double x[]){
         }
         if(m[i][i] == 0){
             if(fabs(m[i][n] - soma) < EPSILON){
-                x[i] = 0; //Variável Livre
+                x[i] = 0; //Vari˜vel Livre
                 tipo = 1;
             }
             else{
-                return 2; //SL incompatível
+                return 2; //SL incompat˜vel
             }
         }
         else{
@@ -357,8 +357,8 @@ float calculaL(int grau,int coeficientes[]){
     //n: grau do polinomio
     int n=grau;
 
-    // k: maior índice dentre os índices dos coeficientes negativos
-    // b: módulo  do menor coeficiente negativo
+    // k: maior ˜ndice dentre os ˜ndices dos coeficientes negativos
+    // b: m˜dulo  do menor coeficiente negativo
     // an: coeficiente do x?n
     int an,b,k,i;
 
@@ -460,35 +460,175 @@ void lagrange(int grau,int coeficientes[]){
 
 }
 
-void equacaoAlgebrica(){
-    int grau=1;
+int bolzano(float a,float b,int coeficientes[],int grau){
+
+    float pa = 0;
+    float pb = 0;
     int i;
 
-    printf("Digite o grau da equacao: ");
+    for(i=grau;i>=0;i--){
+
+        pa = pa + ((float)coeficientes[i] * (float)pow(a,i));
+        pb = pb + ((float)coeficientes[i] * (float)pow(b,i));
+
+    }
+
+    if((pa*pb)<0){
+
+        return 1;
+
+    }
+    if((pa*pb)>0){
+
+        return 0;
+
+    }
+
+}
+
+void bissecao(float a, float b,int coeficientes[],int grau){
+
+    double pa,pb,pm,m,erro,a2,b2;
+    int i,j;
+
+    j=0;
+    a2 = a;
+    b2 = b;
+
+    erro = (double)(b2-a2)/(double)2;
+
+    while(j<1001 && erro>=pow(10,-8)){
+
+        pa = 0;
+        pb = 0;
+        pm = 0;
+        m = (b2+a2)/(double)2;
+        erro = (b2-a2)/(double)2;
+
+        for(i=grau;i>=0;i--){
+
+            pa = pa + ((double)coeficientes[i] * (double)pow(a2,i));
+            pb = pb + ((double)coeficientes[i] * (double)pow(b2,i));
+
+        }
+
+        for(i=grau;i>=0;i--){
+
+            pm = pm + ((double)coeficientes[i] * (double)pow(m,i));
+
+        }
+
+        if(pa*pm>0){
+            a2=m;
+        }
+        if(pa*pm<0){
+            b2=m;
+        }
+        if(pa*pm==0){
+            j = 10000;
+        }
+
+        j = j+1;
+
+    }
+
+    printf("\n\n Raiz aproximada do polinomio: %.30lf \n Valor do erro: %.30lf",m,erro);
+
+}
+
+
+void equacaoAlgebrica(){
+
+    int grau=1;
+    int i,j,contador;
+    float a,b;
+
+    printf("\n Digite o grau da equacao: ");
     scanf("%i",&grau);
+
+    while(grau==0) {
+        printf("O grau nao pode ser zero.\n");
+        printf("\n Digite o grau da equacao: "); 
+        scanf("%i",&grau);
+    }
 
     int coeficientes[grau+1];
 
     for(i=grau;i>=0;i--){
-        printf("\nDigite o coeficiente a%i: ",i);
+
+        printf("\n  Digite o coeficiente a%i: ",i);
         scanf("%i",&coeficientes[i]);
 
         if((i==grau) && (coeficientes[i]<=0)){
 
-            printf("\nCoeficiente an digitado eh menor que zero. Tente novamente com outro valor.\n");
+            printf("\n  ERRO: Coeficiente an digitado eh menor que zero. Tente novamente com outro valor.\n");
             i = grau + 1;
+
         }
 
         if((i==0) && (coeficientes[i]==0)){
 
-            printf("\nCoeficiente a0 digitado eh igual a zero. Tente novamente com outro valor.\n");
+            printf("\n  ERRO: Coeficiente a0 digitado eh igual a zero. Tente novamente com outro valor.\n");
             i = i + 1;
+
         }
+
+        if(i==0){
+
+            contador = 0;
+
+            for(j=grau;j>=0;j--){
+
+                if(coeficientes[j]>=0){
+
+                    contador = contador + 1;
+
+                }
+
+            }
+
+            if(contador==grau+1){
+
+                printf("\n  ERRO: Todos os coeficientes digitados sao positivos. Necessario haver pelo menos um coeficiente negativo. Tente novamente com outros valores.\n");
+                i = grau+1;
+
+            }
+
+        }
+
     }
+
+    // calculo dos limites das ra˜zes usando o teorema de lagrange
+
+    printf("\n -> Teorema de Lagrange: \n");
+
     lagrange(grau,coeficientes);
+
+    //verificando se a quantidade de ra˜zes ˜ ˜mpar ou par usando o Teorema de Bolzano
+
+    printf("\n\n -> Teorema de Bolzano: \n");
+    printf("\n  Escolha um intervalo");
+    printf("\n\n   Digite o primeiro valor do intervalo: ");
+    scanf("%f",&a);
+    printf("   Digite o ultimo valor do intervalo: ");
+    scanf("%f",&b);
+
+    if(bolzano(a,b,coeficientes,grau)==0){
+
+        printf(" \n  O polinomio possui uma quantidade par de raizes reais no intervalo [%f,%f]",a,b);
+
+    }
+    if(bolzano(a,b,coeficientes,grau)==1){
+
+        printf(" \n  O polinomio possui uma quantidade impar de raizes reais no intervalo [%f,%f]",a,b);
+
+        printf("\n\n -> Metodo da Bissecao:");
+
+        bissecao(a,b,coeficientes,grau);
+
+    }
+
 }
-
-
 
 int main(){
     char entradaUsuario;
@@ -503,7 +643,7 @@ int main(){
     while(entradaUsuario != 'F'){
         printf("C - Conversao \n");
         printf("S - Sistema Linear \n");
-        printf("E - Equaçao Algébrica \n");
+        printf("E - Equa˜ao Alg˜brica \n");
         printf("F - Finalizar \n\n");
         printf("Escolha uma opcao\n\n");
         //Limpar o buffer no Windows
