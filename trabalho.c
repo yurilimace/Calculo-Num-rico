@@ -4,8 +4,54 @@
 #include <math.h>
 #define EPSILON 0.000001
 
+
+/* Exerc˜cio Programa da Disciplina Calculo Num˜rico Tarde
+   Curso Engenharia da Computa˜˜o   */
+
+
+
+/* Autores
+    Angelo
+    Italo Bruno
+    Jo˜o Gabriel
+    Jos˜ Yuri
+    Luan Pontes
+*/
+
+
+/*  O programa desenvolvido abaixo visa implementar na linguagem C alguns conteudos abordados em sala como a convers˜o
+    de base numerica,resolu˜˜o de sistemas lineares utilizando o metodo de Jordan,Teorema de Lagrange para exibir o in-
+    tervalo onde se encontram as raizes reais negativas e positivas da equa˜˜o,Assim como o Teorema de Bolzano para a ve-
+    rifica˜˜es de raizes impares e o metodo da bisse˜˜o para calcular uma aproxima˜˜o para a raiz contida nesse intervalo  */
+
+/* o Programa funciona da seguinte maneira ao selecionar C o usu˜rio digita um numero inteiro para ser realizada a convers˜o
+ para a base bin˜ria,octal e hexadecimal, ao selecionar S o usu˜rio deve digitar o nome do arquivo que cont˜m a matriz aumentada
+ para a resolu˜˜o do sistema linear que ser˜ resolvido utilizando o metodo de jordan para triagularizar a matriz e a substitui˜˜o
+ retroativa para a resolu˜˜o do sistema, ao selecionar E o usu˜rio digita o grau da equa˜˜o e tamb˜m os coeficentes*/
+
+
+
+void limpaBuffer(){
+    /*Fun˜˜o criada para poder executar o comando de limpeza do buffer do teclado nos seguintes sistemas operacionais
+    Linux, Windows e IOS*/
+    #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+        fpurge(stdin);
+    #endif
+
+    #if defined(_WIN32) || defined(_WIN64)
+        fflush(stdin);
+    #endif
+
+
+}
+
+
+/* Fun˜˜es necessarias para a convers˜o de base num˜rica*/
+
+
 void converteOctal(int Inteiro,double Fracionario,int *resultado){
-    int i,j,k,m;
+    /*Converte o numero digitado pelo usuario para a base octal*/
+    int i,j,k,m; //variaveis
     double aux;
 
     for(i=0;Inteiro>=1;i++){
@@ -17,7 +63,7 @@ void converteOctal(int Inteiro,double Fracionario,int *resultado){
         printf("%d",resultado[j]);
     }
     printf(",");
-
+    //la˜o para calcular a parte fracion˜ria da convers˜o parando quando for 0 ou quando a parte fracionaria atingir a precis˜o de 20 casas decimais
     for(k =0;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 8;
         Fracionario = modf(Fracionario,&aux);
@@ -25,9 +71,9 @@ void converteOctal(int Inteiro,double Fracionario,int *resultado){
     }
 }
 
-// Conversão para binário feito
+/*Converte o numero digitado pelo usuario para a base binaria*/
 void converteBinario(int Inteiro,double Fracionario,int *resultado){
-    int i,j,k,m;
+    int i,j,k,m; //variaveis
     double aux;
 
     for(i=0;Inteiro>=1;i++){
@@ -39,7 +85,7 @@ void converteBinario(int Inteiro,double Fracionario,int *resultado){
         printf("%d",resultado[j]);
     }
     printf(",");
-
+    //la˜o para calcular a parte fracion˜ria da convers˜o parando quando for 0 ou quando a parte fracionaria atingir a precis˜o de 20 casas decimais
     for(k =0;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 2;
         Fracionario = modf(Fracionario,&aux);
@@ -48,6 +94,7 @@ void converteBinario(int Inteiro,double Fracionario,int *resultado){
 }
 
 void converteHexa(int Inteiro,double Fracionario,int *resultado){
+    /*Converte o numero digitado pelo usuario para a base hexadecimal*/
     int i,j,k,m;
     double aux;
 
@@ -55,7 +102,7 @@ void converteHexa(int Inteiro,double Fracionario,int *resultado){
         resultado[i] = Inteiro % 16;
         Inteiro = Inteiro / 16;
     }
-
+    //substitui para o caracter correspondente na base hexadecimal quando o numero foi maior que 9
     for(j = i-1;j>=0;j--){
         if(resultado[j] == 10){
             printf("A");
@@ -81,7 +128,7 @@ void converteHexa(int Inteiro,double Fracionario,int *resultado){
 
     }
     printf(",");
-
+    //la˜o para calcular a parte fracion˜ria da convers˜o parando quando for 0 ou quando a parte fracionaria atingir a precis˜o de 20 casas decimais
     for(k =i;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 16;
         Fracionario = modf(Fracionario,&aux);
@@ -110,22 +157,23 @@ void converteHexa(int Inteiro,double Fracionario,int *resultado){
 }
 
 void converteNumero(){
+    /*Fun˜˜o que agrupa e chama os outros metodos para convers˜o de base numerica*/
     int i,j;
-    double teste;
+    double numero;
     int parteInteira;
     double parteFracionaria;
-    int  *resultado; //Armazena o resultado das sucessivas divisões
+    int  *resultado; //Armazena o resultado das sucessivas divis˜es
 
     printf("Digite o numero decimal ");
-    scanf("%lf",&teste);
+    scanf("%lf",&numero);
 
-    parteInteira = floor(teste);
-    parteFracionaria = teste - parteInteira;
+    parteInteira = floor(numero); //armazena a parte inteira do numero
+    parteFracionaria = numero - parteInteira;
 
     resultado = malloc(sizeof(resultado)*30);
 
     if(resultado == NULL){
-        printf("Não alocado Falta de memoria");
+        printf("N˜o alocado Falta de memoria");
     }
 
 
@@ -137,10 +185,12 @@ void converteNumero(){
     printf("\n");
 }
 
+/* Fim das fun˜˜es necess˜rias para a realiza˜˜o da convers˜o de base*/
+
 
 double **alocaMatriz(int numLinhas, int numColunas){
-    /*Se tiver memória disponível, aloca uma matriz de double com L linhas e c Colunas
-      e devolve um ponteiro para essa matriz; Caso contrário, devolve um ponteiro nulo.*/
+    /*Se tiver mem˜ria dispon˜vel, aloca uma matriz de double com L linhas e c Colunas
+      e devolve um ponteiro para essa matriz; Caso contr˜rio, devolve um ponteiro nulo.*/
     double **matriz;
     int i, j;
     matriz = malloc(sizeof(double *)*numLinhas);
@@ -197,10 +247,11 @@ void jordan(double **m,int n, int *colunas){
             }
             if(j<n){
                for(p=0;p<n;p++){
-                  aux = m[p][i];
+                  aux = m[p][i];  /* faz a troca dos elementos da coluna*/
                   m[p][i] = m[p][j];
                   m[p][j] = aux;
                }
+               /*troca o coeficiente das colunas em que foi necess˜rio a troca */
                aux = colunas[i];
                colunas[i] = colunas[j];
                colunas[j] = aux;
@@ -226,9 +277,9 @@ void jordan(double **m,int n, int *colunas){
 
 
 int sretro(double **m, int n, double x[]){
-    /*Recebe m, a matriz aumentada de um SL TS com n variáveis.
-    Se o SL for determinado, armazena em x a solução do SL e dovolve 0;
-    Se for indeterminado, armazena uma solução do SL e devolve 1;*/
+    /*Recebe m, a matriz aumentada de um SL TS com n vari˜veis.
+    Se o SL for determinado, armazena em x a solu˜˜o do SL e dovolve 0;
+    Se for indeterminado, armazena uma solu˜˜o do SL e devolve 1;*/
     int i, j, tipo = 0;
     double soma;
     for(i = n - 1; i >= 0; i--){
@@ -238,11 +289,11 @@ int sretro(double **m, int n, double x[]){
         }
         if(m[i][i] == 0){
             if(fabs(m[i][n] - soma) < EPSILON){
-                x[i] = 0; //Variável Livre
+                x[i] = 0; //Vari˜vel Livre
                 tipo = 1;
             }
             else{
-                return 2; //SL incompatível
+                return 2; //SL incompat˜vel
             }
         }
         else{
@@ -306,8 +357,8 @@ float calculaL(int grau,int coeficientes[]){
     //n: grau do polinomio
     int n=grau;
 
-    // k: maior índice dentre os índices dos coeficientes negativos
-    // b: módulo  do menor coeficiente negativo
+    // k: maior ˜ndice dentre os ˜ndices dos coeficientes negativos
+    // b: m˜dulo  do menor coeficiente negativo
     // an: coeficiente do x?n
     int an,b,k,i;
 
@@ -338,7 +389,7 @@ void lagrange(int grau,int coeficientes[]){
     int coeficientes2[grau+1];
     float Ls[4];
 
-    // calculo do L 
+    // calculo do L
     for(i=grau;i>=0;i--){
         coeficientes2[i] = coeficientes[i];
     }
@@ -409,35 +460,169 @@ void lagrange(int grau,int coeficientes[]){
 
 }
 
-void equacaoAlgebrica(){
-    int grau=1;
+int bolzano(float a,float b,int coeficientes[],int grau){
+
+    float pa = 0;
+    float pb = 0;
     int i;
 
-    printf("Digite o grau da equacao: ");
+    for(i=grau;i>=0;i--){
+
+        pa = pa + ((float)coeficientes[i] * (float)pow(a,i));
+        pb = pb + ((float)coeficientes[i] * (float)pow(b,i));
+
+    }
+
+    if((pa*pb)<0){
+
+        return 1;
+
+    }
+    if((pa*pb)>0){
+
+        return 0;
+
+    }
+
+}
+
+void bissecao(float a, float b,int coeficientes[],int grau){
+
+    double pa,pb,pm,m,erro,a2,b2;
+    int i,j;
+
+    j=0;
+    a2 = a;
+    b2 = b;
+
+    erro = (double)(b2-a2)/(double)2;
+
+    while(j<1001 && erro>=pow(10,-8)){
+
+        pa = 0;
+        pb = 0;
+        pm = 0;
+        m = (b2+a2)/(double)2;
+        erro = (b2-a2)/(double)2;
+
+        for(i=grau;i>=0;i--){
+
+            pa = pa + ((double)coeficientes[i] * (double)pow(a2,i));
+            pb = pb + ((double)coeficientes[i] * (double)pow(b2,i));
+
+        }
+
+        for(i=grau;i>=0;i--){
+
+            pm = pm + ((double)coeficientes[i] * (double)pow(m,i));
+
+        }
+
+        if(pa*pm>0){
+            a2=m;
+        }
+        if(pa*pm<0){
+            b2=m;
+        }
+        if(pa*pm==0){
+            j = 10000;
+        }
+
+        j = j+1;
+
+    }
+
+    printf("\n\n Raiz aproximada do polinomio: %.30lf \n Valor do erro: %.30lf",m,erro);
+
+}
+
+
+void equacaoAlgebrica(){
+
+    int grau=1;
+    int i,j,contador;
+    float a,b;
+
+    printf("\n Digite o grau da equacao: ");
     scanf("%i",&grau);
 
     int coeficientes[grau+1];
 
     for(i=grau;i>=0;i--){
-        printf("\nDigite o coeficiente a%i: ",i);
+
+        printf("\n  Digite o coeficiente a%i: ",i);
         scanf("%i",&coeficientes[i]);
 
         if((i==grau) && (coeficientes[i]<=0)){
 
-            printf("\nCoeficiente an digitado eh menor que zero. Tente novamente com outro valor.\n");
+            printf("\n  ERRO: Coeficiente an digitado eh menor que zero. Tente novamente com outro valor.\n");
             i = grau + 1;
+
         }
 
         if((i==0) && (coeficientes[i]==0)){
 
-            printf("\nCoeficiente a0 digitado eh igual a zero. Tente novamente com outro valor.\n");
+            printf("\n  ERRO: Coeficiente a0 digitado eh igual a zero. Tente novamente com outro valor.\n");
             i = i + 1;
+
         }
+
+        if(i==0){
+
+            contador = 0;
+
+            for(j=grau;j>=0;j--){
+
+                if(coeficientes[j]>=0){
+
+                    contador = contador + 1;
+
+                }
+
+            }
+
+            if(contador==grau+1){
+
+                printf("\n  ERRO: Todos os coeficientes digitados sao positivos. Necessario haver pelo menos um coeficiente negativo. Tente novamente com outros valores.\n");
+                i = grau+1;
+
+            }
+
+        }
+
     }
+
+    // calculo dos limites das ra˜zes usando o teorema de lagrange
+
+    printf("\n -> Teorema de Lagrange: \n");
+
     lagrange(grau,coeficientes);
+
+    //verificando se a quantidade de ra˜zes ˜ ˜mpar ou par usando o Teorema de Bolzano
+
+    printf("\n\n -> Teorema de Bolzano: \n");
+    printf("\n  Escolha um intervalo");
+    printf("\n\n   Digite o primeiro valor do intervalo: ");
+    scanf("%f",&a);
+    printf("   Digite o ultimo valor do intervalo: ");
+    scanf("%f",&b);
+
+    if(bolzano(a,b,coeficientes,grau)==0){
+
+        printf(" \n  O polinomio possui uma quantidade par de raizes reais no intervalo [%f,%f]",a,b);
+
+    }
+    if(bolzano(a,b,coeficientes,grau)==1){
+
+        printf(" \n  O polinomio possui uma quantidade impar de raizes reais no intervalo [%f,%f]",a,b);
+
+        printf("\n\n -> Metodo da Bissecao:");
+
+        bissecao(a,b,coeficientes,grau);
+
+    }
+
 }
-
-
 
 int main(){
     char entradaUsuario;
@@ -452,13 +637,13 @@ int main(){
     while(entradaUsuario != 'F'){
         printf("C - Conversao \n");
         printf("S - Sistema Linear \n");
-        printf("E - Equaçao Algébrica \n");
+        printf("E - Equa˜ao Alg˜brica \n");
         printf("F - Finalizar \n\n");
         printf("Escolha uma opcao\n\n");
         //Limpar o buffer no Windows
-        fflush(stdin);
+        limpaBuffer();
         //Limpar o buffer no Linux
-        fpurge(stdin);
+        //fpurge(stdin);
         scanf("%c",&entradaUsuario);
         if(entradaUsuario == 'C' || entradaUsuario == 'c'){
             converteNumero();
@@ -466,9 +651,9 @@ int main(){
         }
         else if(entradaUsuario == 'S' || entradaUsuario == 's'){
             //Limpar o buffer no Windows
-            fflush(stdin);
+            limpaBuffer();
             //Limpar o buffer no Linux
-            fpurge(stdin);
+            //fpurge(stdin);
             printf("digite o nome do arquivo \n");
             gets(fileName);
             strcat(fileName,".txt\0");
