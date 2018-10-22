@@ -745,9 +745,9 @@ int main(){
         else if(entradaUsuario == 'S' || entradaUsuario == 's'){
             //Limpar o buffer no Windows
             limpaBuffer();
-            printf("Digite o nome do arquivo: ");
+            printf("Digite o nome do arquivo sem a extensão: ");
             gets(fileName);
-            strcat(fileName,".txt\0");
+            strcat(fileName, ".txt\0");
             file = fopen(fileName,"r");
 
             if(file == NULL){
