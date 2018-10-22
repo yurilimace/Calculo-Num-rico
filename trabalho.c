@@ -5,34 +5,34 @@
 #define EPSILON 0.000001
 
 
-/* Exerc˜cio Programa da Disciplina Calculo Num˜rico Tarde
-   Curso Engenharia da Computa˜˜o   */
+/* Exercício Programa da Disciplina Calculo Numérico Tarde
+   Curso Engenharia da Computação   */
 
 
 
 /* Autores
     Angelo
     Italo Bruno
-    Jo˜o Gabriel
-    Jos˜ Yuri
+    João Gabriel
+    José Yuri
     Luan Pontes
 */
 
 
-/*  O programa desenvolvido abaixo visa implementar na linguagem C alguns conteudos abordados em sala como a convers˜o
-    de base numerica,resolu˜˜o de sistemas lineares utilizando o metodo de Jordan,Teorema de Lagrange para exibir o in-
-    tervalo onde se encontram as raizes reais negativas e positivas da equa˜˜o,Assim como o Teorema de Bolzano para a ve-
-    rifica˜˜es de raizes impares e o metodo da bisse˜˜o para calcular uma aproxima˜˜o para a raiz contida nesse intervalo  */
+/*  O programa desenvolvido abaixo visa implementar na linguagem C alguns conteudos abordados em sala como a conversão
+    de base numerica,resolução de sistemas lineares utilizando o metodo de Jordan,Teorema de Lagrange para exibir o in-
+    tervalo onde se encontram as raizes reais negativas e positivas da equação,Assim como o Teorema de Bolzano para a ve-
+    rificações de raizes impares e o metodo da bisseção para calcular uma aproximação para a raiz contida nesse intervalo  */
 
-/* o Programa funciona da seguinte maneira ao selecionar C o usu˜rio digita um numero inteiro para ser realizada a convers˜o
- para a base bin˜ria,octal e hexadecimal, ao selecionar S o usu˜rio deve digitar o nome do arquivo que cont˜m a matriz aumentada
- para a resolu˜˜o do sistema linear que ser˜ resolvido utilizando o metodo de jordan para triagularizar a matriz e a substitui˜˜o
- retroativa para a resolu˜˜o do sistema, ao selecionar E o usu˜rio digita o grau da equa˜˜o e tamb˜m os coeficentes*/
+/* o Programa funciona da seguinte maneira ao selecionar C o usuário digita um numero inteiro para ser realizada a conversão
+ para a base binária,octal e hexadecimal, ao selecionar S o usuário deve digitar o nome do arquivo que contém a matriz aumentada
+ para a resolução do sistema linear que será resolvido utilizando o metodo de jordan para triagularizar a matriz e a substituição
+ retroativa para a resolução do sistema, ao selecionar E o usuário digita o grau da equação e também os coeficentes*/
 
 
 
 void limpaBuffer(){
-    /*Fun˜˜o criada para poder executar o comando de limpeza do buffer do teclado nos seguintes sistemas operacionais
+    /*Função criada para poder executar o comando de limpeza do buffer do teclado nos seguintes sistemas operacionais
     Linux, Windows e IOS*/
     #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
         fpurge(stdin);
@@ -46,7 +46,7 @@ void limpaBuffer(){
 }
 
 
-/* Fun˜˜es necessarias para a convers˜o de base num˜rica*/
+/* Funções necessarias para a conversão de base numérica*/
 
 
 void converteOctal(int Inteiro,double Fracionario,int *resultado){
@@ -63,7 +63,7 @@ void converteOctal(int Inteiro,double Fracionario,int *resultado){
         printf("%d",resultado[j]);
     }
     printf(",");
-    //la˜o para calcular a parte fracion˜ria da convers˜o parando quando for 0 ou quando a parte fracionaria atingir a precis˜o de 20 casas decimais
+    //laço para calcular a parte fracionária da conversão parando quando for 0 ou quando a parte fracionaria atingir a precisão de 20 casas decimais
     for(k =0;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 8;
         Fracionario = modf(Fracionario,&aux);
@@ -85,7 +85,7 @@ void converteBinario(int Inteiro,double Fracionario,int *resultado){
         printf("%d",resultado[j]);
     }
     printf(",");
-    //la˜o para calcular a parte fracion˜ria da convers˜o parando quando for 0 ou quando a parte fracionaria atingir a precis˜o de 20 casas decimais
+    //laço para calcular a parte fracionária da conversão parando quando for 0 ou quando a parte fracionaria atingir a precisão de 20 casas decimais
     for(k =0;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 2;
         Fracionario = modf(Fracionario,&aux);
@@ -128,7 +128,7 @@ void converteHexa(int Inteiro,double Fracionario,int *resultado){
 
     }
     printf(",");
-    //la˜o para calcular a parte fracion˜ria da convers˜o parando quando for 0 ou quando a parte fracionaria atingir a precis˜o de 20 casas decimais
+    //laço para calcular a parte fracionária da conversão parando quando for 0 ou quando a parte fracionaria atingir a precisão de 20 casas decimais
     for(k =i;Fracionario!=0 && k<=19;k++){
         Fracionario = Fracionario * 16;
         Fracionario = modf(Fracionario,&aux);
@@ -157,7 +157,7 @@ void converteHexa(int Inteiro,double Fracionario,int *resultado){
 }
 
 void converteNumero(){
-    /*Fun˜˜o que agrupa e chama os outros metodos para convers˜o de base numerica*/
+    /*Função que agrupa e chama os outros metodos para conversão de base numerica*/
     int i,j;
     double numero;
     int parteInteira;
@@ -185,7 +185,7 @@ void converteNumero(){
     printf("\n");
 }
 
-/* Fim das fun˜˜es necess˜rias para a realiza˜˜o da convers˜o de base*/
+/* Fim das funções necessárias para a realização da conversão de base*/
 
 
 double **alocaMatriz(int numLinhas, int numColunas){
@@ -251,7 +251,7 @@ void jordan(double **m,int n, int *colunas){
                   m[p][i] = m[p][j];
                   m[p][j] = aux;
                }
-               /*troca o coeficiente das colunas em que foi necess˜rio a troca */
+               /*troca o coeficiente das colunas em que foi necessário a troca */
                aux = colunas[i];
                colunas[i] = colunas[j];
                colunas[j] = aux;
