@@ -546,6 +546,12 @@ void equacaoAlgebrica(){
     printf("\n Digite o grau da equacao: ");
     scanf("%i",&grau);
 
+    while(grau==0) {
+        printf("O grau nao pode ser zero.\n");
+        printf("\n Digite o grau da equacao: "); 
+        scanf("%i",&grau);
+    }
+
     int coeficientes[grau+1];
 
     for(i=grau;i>=0;i--){
