@@ -277,7 +277,7 @@ void converteNumero(){
     Se o SL for determinado, armazena em x a solução do SL e dovolve 0;
     Se for indeterminado, armazena uma solução do SL e devolve 1.
 
-    6 - void sistemaLinear(FILE *file):
+    6 - void sistemaLinear(FILE *arquivo):
     Função que agrupa e chama os outros métodos para a resolução do SL através do método de jordan.
 
 */
@@ -403,14 +403,14 @@ int sretro(double **m, int n, double x[]){
     return tipo;
 }//Fim da sretro()
 
-void sistemaLinear(FILE *file){
+void sistemaLinear(FILE *arquivo){
     /*
         Função que agrupa e chama os outros métodos para a resolução do SL através do método de jordan.
     */
     double **matriz, *x;
     int n, i, j, tipo;
     int *colunas;
-    fscanf(file, "%d \r\n", &n);
+    fscanf(arquivo, "%d \r\n", &n);
     printf("%d \r\n", n);
     matriz = alocaMatriz(n, n+1);
     x = malloc(sizeof(double) * n);
@@ -432,7 +432,7 @@ void sistemaLinear(FILE *file){
 
     for ( i = 0 ; i < n ; i++ ){
          for(j = 0 ; j < n+1 ; j++){
-            fscanf(file, "%lf", &matriz[i][j]);
+            fscanf(arquivo, "%lf", &matriz[i][j]);
          }
     }
 
@@ -721,14 +721,12 @@ void equacaoAlgebrica(){
 //=============================== Função Principal ===============================
 int main(){
     char entradaUsuario;
-    FILE *file;
-    char *fileName;
-    fileName = malloc(sizeof(char)*35);
-
-    if(fileName == NULL){
+    FILE *arquivo;
+    char *nomeDoArquivo;
+    nomeDoArquivo = malloc(sizeof(char) * 35);
+    if(nomeDoArquivo == NULL){
         printf("Falta de memória");
     }
-
     while(entradaUsuario != 'F'){
         printf("C - Conversão \n");
         printf("S - Sistema Linear \n");
@@ -746,17 +744,18 @@ int main(){
             //Limpar o buffer no Windows
             limpaBuffer();
             printf("Digite o nome do arquivo sem a extensão: ");
-            gets(fileName);
-            strcat(fileName, ".txt\0");
-            file = fopen(fileName,"r");
+            gets(nomeDoArquivo);
+            strcat(nomeDoArquivo, ".txt\0");
+            arquivo = fopen(nomeDoArquivo,"r");
 
-            if(file == NULL){
+            if(arquivo == NULL){
                 printf("Arquivo não encontrado!!!\n\n");
             }
             else{
                 printf("Arquivo Encontrado!\n\n");
-                sistemaLinear(file);
+                sistemaLinear(arquivo);
             }
+            fclose(nomeDoArquivo);
         }
         else if(entradaUsuario == 'E' || entradaUsuario == 'e'){
             equacaoAlgebrica();
